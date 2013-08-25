@@ -16,6 +16,7 @@
 #import "CouchResource.h"
 @class CouchDatabase, CouchDocument, CouchDesignDocument;
 @class CouchLiveQuery, CouchQueryEnumerator, CouchQueryRow;
+@class CouchSequence;
 
 
 /** Options for CouchQuery.stale property, to allow out-of-date results to be returned. */
@@ -142,7 +143,7 @@ typedef enum {
     NSArray* _rows;
     NSUInteger _totalCount;
     NSUInteger _nextRow;
-    NSUInteger _sequenceNumber;
+    CouchSequence* _sequenceNumber;
 }
 
 /** The number of rows returned in this enumerator */
@@ -152,7 +153,7 @@ typedef enum {
 @property (readonly) NSUInteger totalCount;
 
 /** The database's current sequenceNumber at the time the view was generated. */
-@property (readonly) NSUInteger sequenceNumber;
+@property (readonly) CouchSequence* sequenceNumber; //TODO check modifiers
 
 /** The next result row. This is the same as -nextObject but with a checked return type. */
 - (CouchQueryRow*) nextRow;
@@ -204,5 +205,5 @@ typedef enum {
 
 /** The local sequence number of the associated doc/revision.
     Valid only if the 'sequences' and 'prefetch' properties were set in the query; otherwise returns 0. */
-@property (readonly) UInt64 localSequence;
+@property (readonly) UInt64 localSequence; //TODO does this have anything to do with the issue?
 @end

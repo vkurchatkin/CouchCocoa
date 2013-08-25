@@ -17,6 +17,8 @@
 @class CouchChangeTracker;
 
 
+@class CouchSequence;
+
 @protocol CouchChangeTrackerClient <NSObject>
 - (void) changeTrackerReceivedChange: (NSDictionary*)change;
 @optional
@@ -40,18 +42,18 @@ typedef enum CouchChangeTrackerMode {
     NSURL* _databaseURL;
     id<CouchChangeTrackerClient> _client;
     CouchChangeTrackerMode _mode;
-    NSUInteger _lastSequenceNumber;
+    CouchSequence* _lastSequenceNumber;
 }
 
 - (id)initWithDatabaseURL: (NSURL*)databaseURL
                      mode: (CouchChangeTrackerMode)mode
-             lastSequence: (NSUInteger)lastSequence
+             lastSequence: (CouchSequence*)lastSequence
                    client: (id<CouchChangeTrackerClient>)client;
 
 @property (readonly, nonatomic) NSURL* databaseURL;
 @property (readonly, nonatomic) NSString* databaseName;
 @property (readonly, nonatomic) CouchChangeTrackerMode mode;
-@property (readonly, nonatomic) NSUInteger lastSequenceNumber;
+@property (readonly, nonatomic) CouchSequence* lastSequenceNumber; //TODO check modifiers
 
 - (BOOL) start;
 - (void) stop;

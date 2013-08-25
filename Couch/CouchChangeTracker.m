@@ -19,6 +19,7 @@
 #import "CouchConnectionChangeTracker.h"
 #import "CouchSocketChangeTracker.h"
 #import "CouchInternal.h"
+#import "CouchSequence.h"
 
 
 @implementation CouchChangeTracker
@@ -27,9 +28,10 @@
 
 - (id)initWithDatabaseURL: (NSURL*)databaseURL
                      mode: (CouchChangeTrackerMode)mode
-             lastSequence: (NSUInteger)lastSequence
+             lastSequence: (CouchSequence *)lastSequence
                    client: (id<CouchChangeTrackerClient>)client {
     NSParameterAssert(databaseURL);
+    NSParameterAssert(lastSequence);
     NSParameterAssert(client);
     self = [super init];
     if (self) {
@@ -51,7 +53,7 @@
         _databaseURL = [databaseURL retain];
         _client = client;
         _mode = mode;
-        _lastSequenceNumber = lastSequence;
+        _lastSequenceNumber = [lastSequence retain];
     }
     return self;
 }
@@ -62,9 +64,9 @@
 
 - (NSString*) changesFeedPath {
     static NSString* const kModeNames[3] = {@"normal", @"longpoll", @"continuous"};
-    return [NSString stringWithFormat: @"_changes?feed=%@&heartbeat=300000&since=%lu",
+    return [NSString stringWithFormat: @"_changes?feed=%@&heartbeat=300000&since=%@",
             kModeNames[_mode],
-            (unsigned long)_lastSequenceNumber];
+            _lastSequenceNumber];
 }
 
 - (NSURL*) changesFeedURL {
@@ -79,6 +81,7 @@
 - (void)dealloc {
     [self stop];
     [_databaseURL release];
+    [_lastSequenceNumber release];
     [super dealloc];
 }
 
@@ -109,7 +112,7 @@
     if (!seq)
         return NO;
     [_client changeTrackerReceivedChange: change];
-    _lastSequenceNumber = [seq intValue];
+    _lastSequenceNumber = [[CouchSequence alloc] initWithObject:seq]; //TODO check rc
     return YES;
 }
 

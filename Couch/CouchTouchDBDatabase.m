@@ -26,7 +26,7 @@ static NSString* const TD_DatabaseChangeNotification = @"TD_DatabaseChange";
 @property (readonly) NSString* docID;
 @property (readonly) NSString* revID;
 @property (readonly) BOOL deleted;
-@property SInt64 sequence;
+@property SInt64 sequence; //TODO investigate. As it is a TouchDB-specific class, this is probably unrelated
 @end
 
 

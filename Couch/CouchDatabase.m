@@ -17,6 +17,7 @@
 #import "RESTCache.h"
 #import "CouchChangeTracker.h"
 #import "CouchInternal.h"
+#import "CouchSequence.h"
 
 
 NSString* const kCouchDatabaseChangeNotification = @"CouchDatabaseChange";
@@ -50,8 +51,7 @@ static const NSUInteger kDocRetainLimit = 50;
 
 - (void) close {
     self.tracksChanges = NO;
-    _lastSequenceNumber = 0;
-    _lastSequenceNumberKnown = NO;
+    [_lastSequenceNumber release];
     [_busyDocuments release];
     _busyDocuments = nil;
     [_deferredChanges release];
@@ -419,21 +419,19 @@ static const NSUInteger kDocRetainLimit = 50;
 #pragma mark TRACKING CHANGES:
 
 
-- (NSUInteger) lastSequenceNumber {
-    if (!_lastSequenceNumberKnown) {
-        _lastSequenceNumberKnown = YES;
+- (CouchSequence *) lastSequenceNumber {
+    if (!_lastSequenceNumber) {
         // Don't know the current sequence number, so ask for it:
         id seqObj = [[self GET].responseBody.fromJSON objectForKey: @"update_seq"];  // synchronous
-        if ([seqObj isKindOfClass: [NSNumber class]])
-            _lastSequenceNumber = [seqObj intValue];
+        if (seqObj)
+            _lastSequenceNumber = [[CouchSequence alloc] initWithObject:seqObj];
     }
     return _lastSequenceNumber;
 }
 
 
-- (void) setLastSequenceNumber:(NSUInteger)lastSequenceNumber {
-    _lastSequenceNumber = lastSequenceNumber;
-    _lastSequenceNumberKnown = YES;
+- (void) setLastSequenceNumber:(CouchSequence *)lastSequenceNumber {
+    _lastSequenceNumber = [lastSequenceNumber retain]; //TODO check rc
 }
 
 
@@ -450,25 +448,25 @@ static const NSUInteger kDocRetainLimit = 50;
 // Part of <CouchChangeTrackerClient> protocol
 - (void) changeTrackerReceivedChange: (NSDictionary*)change {
     // Get & check sequence number:
-    NSNumber* sequenceObj = $castIf(NSNumber, [change objectForKey: @"seq"]);
-    if (!sequenceObj)
+    CouchSequence* sequence = [[CouchSequence alloc] initWithObject:[change objectForKey:@"seq"]];
+    if (!sequence)
         return;
-    NSUInteger sequence = [sequenceObj intValue];
-    if (sequence <= _lastSequenceNumber)
+
+    if (sequence.ordered && [sequence isLessOrEqual: _lastSequenceNumber]) //TODO check rc
         return;
     
     if (_busyDocuments.count) {
         // Don't process changes while I have pending PUT/POST/DELETEs out. Wait till they finish,
         // so I don't think the change is external.
-        COUCHLOG2(@"CouchDatabase deferring change (seq %lu) till operations finish", 
-              (unsigned long)sequence);
+        COUCHLOG2(@"CouchDatabase deferring change (seq %@) till operations finish",
+              sequence);
         if (!_deferredChanges)
             _deferredChanges = [[NSMutableArray alloc] init];
         [_deferredChanges addObject: change];
         return;
     }
     
-    self.lastSequenceNumber = sequence;
+    self.lastSequenceNumber = sequence;   //TODO check rc
     
     // Get document:
     NSString* docID = [change objectForKey: @"id"];
@@ -478,7 +476,7 @@ static const NSUInteger kDocRetainLimit = 50;
     NSDictionary* userInfo = nil;
     BOOL isExternalChange = [document notifyChanged: change];
     if (isExternalChange) {
-        COUCHLOG(@"CouchDatabase: External change with seq=%lu", (unsigned long)sequence);
+        COUCHLOG(@"CouchDatabase: External change with seq=%@", sequence);
         userInfo = [NSDictionary dictionaryWithObject: (id)kCFBooleanTrue forKey: @"external"];
     }
 
