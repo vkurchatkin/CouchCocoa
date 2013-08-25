@@ -452,7 +452,7 @@ static const NSUInteger kDocRetainLimit = 50;
     if (!sequence)
         return;
 
-    if (sequence.ordered && [sequence isLessOrEqual: _lastSequenceNumber]) //TODO check rc
+    if ([sequence canCompareTo:_lastSequenceNumber] && [sequence isLessOrEqual: _lastSequenceNumber]) //TODO check rc
         return;
     
     if (_busyDocuments.count) {

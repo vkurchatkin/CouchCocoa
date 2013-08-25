@@ -1,10 +1,9 @@
 #import "CouchStringSequence.h"
 
-
 @implementation CouchStringSequence
 
-- (BOOL)ordered {
-    return YES;
+- (BOOL)canCompareTo:(CouchSequence *)sequence {
+    return NO;
 }
 
 - (BOOL)isEqualToSequence:(CouchSequence *)sequence {

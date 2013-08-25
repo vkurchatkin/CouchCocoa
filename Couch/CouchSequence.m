@@ -6,7 +6,7 @@
     return nil;
 }
 
-- (BOOL)ordered {
+- (BOOL)canCompareTo:(CouchSequence *)sequence {
     return NO;
 }
 
@@ -31,7 +31,7 @@
 }
 
 - (BOOL)isEqualTo:(id)sequence {
-    if (![sequence isKindOfClass:[CouchSequence class]])
+    if (![sequence isMemberOfClass:[self class]])
         return NO;
 
     return [self isEqualToSequence:sequence];

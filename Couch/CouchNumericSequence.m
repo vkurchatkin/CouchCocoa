@@ -2,8 +2,8 @@
 
 @implementation CouchNumericSequence
 
-- (BOOL)ordered {
-    return YES;
+- (BOOL)canCompareTo:(CouchSequence *)sequence {
+    return [sequence isMemberOfClass:[self class]];
 }
 
 - (BOOL)isLessOrEqual:(CouchSequence *)sequence {
