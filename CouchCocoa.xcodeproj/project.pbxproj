@@ -149,9 +149,13 @@
 		27FA35E31623E25A007501CA /* CouchTouchDBDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 279CA780156FE4B700871563 /* CouchTouchDBDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27FA35E51623E27A007501CA /* CouchEmbeddedServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 2783A0C4156D616800DC8692 /* CouchEmbeddedServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EB518D14BE58B9E5458DCCA2 /* CouchSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = EB5614F0A693E8021B362283 /* CouchSequence.h */; };
+		EB5568C1AC70A2CC30541241 /* CouchNumericSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = EB5B27AF557618C40F3663B1 /* CouchNumericSequence.m */; };
 		EB5893B7CA9A5DEA61F737A2 /* CouchSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = EB5614F0A693E8021B362283 /* CouchSequence.h */; };
+		EB58D26C404DD50EFD959ADF /* CouchNumericSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = EB5B27AF557618C40F3663B1 /* CouchNumericSequence.m */; };
 		EB5A87AC0656BFDFDB4DE5D1 /* CouchSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = EB5724E68D8F17B36EB99D11 /* CouchSequence.m */; };
 		EB5B1EE344CBB095C494DF23 /* CouchSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = EB5724E68D8F17B36EB99D11 /* CouchSequence.m */; };
+		EB5D628D81146C8C331659DD /* CouchNumericSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = EB58018E636EC200D52D0ECC /* CouchNumericSequence.h */; };
+		EB5D9EEB324894D51B213D1B /* CouchNumericSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = EB58018E636EC200D52D0ECC /* CouchNumericSequence.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -304,6 +308,8 @@
 		27EFB7BD13CF66FD00FA1485 /* ShoppingDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ShoppingDemo-Info.plist"; path = "Demo/ShoppingDemo-Info.plist"; sourceTree = SOURCE_ROOT; };
 		EB5614F0A693E8021B362283 /* CouchSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchSequence.h; sourceTree = "<group>"; };
 		EB5724E68D8F17B36EB99D11 /* CouchSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchSequence.m; sourceTree = "<group>"; };
+		EB58018E636EC200D52D0ECC /* CouchNumericSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CouchNumericSequence.h; sourceTree = "<group>"; };
+		EB5B27AF557618C40F3663B1 /* CouchNumericSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CouchNumericSequence.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -430,6 +436,8 @@
 				27333BCB13B7E70100EF5A10 /* Internal */,
 				EB5724E68D8F17B36EB99D11 /* CouchSequence.m */,
 				EB5614F0A693E8021B362283 /* CouchSequence.h */,
+				EB5B27AF557618C40F3663B1 /* CouchNumericSequence.m */,
+				EB58018E636EC200D52D0ECC /* CouchNumericSequence.h */,
 			);
 			path = Couch;
 			sourceTree = "<group>";
@@ -646,6 +654,7 @@
 				279906D2149930DA003D4338 /* CouchConnectionChangeTracker.h in Headers */,
 				279906D6149930DA003D4338 /* CouchSocketChangeTracker.h in Headers */,
 				EB5893B7CA9A5DEA61F737A2 /* CouchSequence.h in Headers */,
+				EB5D628D81146C8C331659DD /* CouchNumericSequence.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -678,6 +687,7 @@
 				27938C63140C01DC00117675 /* CouchModel.h in Headers */,
 				279CE39214D1F761009F3FA6 /* CouchModelFactory.h in Headers */,
 				EB518D14BE58B9E5458DCCA2 /* CouchSequence.h in Headers */,
+				EB5D9EEB324894D51B213D1B /* CouchNumericSequence.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1057,6 +1067,7 @@
 				27AE23AF147C95D3005AAB52 /* CouchModelFactory.m in Sources */,
 				279CA784156FE4B700871563 /* CouchTouchDBDatabase.m in Sources */,
 				EB5A87AC0656BFDFDB4DE5D1 /* CouchSequence.m in Sources */,
+				EB58D26C404DD50EFD959ADF /* CouchNumericSequence.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1077,6 +1088,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB5B1EE344CBB095C494DF23 /* CouchSequence.m in Sources */,
+				EB5568C1AC70A2CC30541241 /* CouchNumericSequence.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
